@@ -5,13 +5,19 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 
-class Category extends Model
+class Tag extends Model
 {
     use Sluggable;
 
     public function announcements()
     {
-        return $this->hasMany(Announcement::class);
+        return $this->belongsToMany(
+        Announcement::class,
+        'announcement_tags',
+        'tag_id',
+        'announcement_id'
+        );
+
     }
 
     public function sluggable()
