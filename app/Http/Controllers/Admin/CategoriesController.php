@@ -40,8 +40,9 @@ class CategoriesController extends Controller
         return redirect()->route('categories.index');
     }
 
-    public function destroy()
+    public function destroy($id)
     {
-
+        Category::find($id)->delete();
+        return route('categories.index');
     }
 }

@@ -32,6 +32,11 @@
 </div>
 
 <script src="/js/admin.js"></script>
+<script>
+    $(function () {
+        $("#example1").DataTable();
+    });
+</script>
 
 </body>
 
