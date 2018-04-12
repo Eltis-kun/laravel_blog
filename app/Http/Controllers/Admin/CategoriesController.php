@@ -43,6 +43,6 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
         Category::find($id)->delete();
-        return route('categories.index');
+        return redirect()->route('categories.index');
     }
 }

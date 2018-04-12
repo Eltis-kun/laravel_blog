@@ -44,7 +44,7 @@
                                 <td>{{$tag->title}}</td>
                                 <td><a href="{{route('tags.edit', $tag->id)}}" class="fa fa-pencil"></a>
                                     {{Form::open(['route'=>['tags.destroy', $tag->id], 'method'=>'delete'])}}
-                                    <button onclick="return confirm('Ви дійсно хочете видалити цю категорію?')" type="submit" class="delete">
+                                    <button onclick="return confirm('Ви дійсно хочете видалити цей тег?')" type="submit" class="delete">
                                         <i class="fa fa-remove"></i>
                                     </button>
                                 {{Form::close()}}

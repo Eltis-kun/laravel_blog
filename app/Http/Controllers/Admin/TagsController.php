@@ -62,7 +62,7 @@ class TagsController extends Controller
     public function edit($id)
     {
         $tag = Tag::find($id);
-        return view('admin.tags.edit', ['tag', $tag]);
+        return view('admin.tags.edit', ['tag' => $tag]);
     }
 
     /**
@@ -90,6 +90,7 @@ class TagsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Tag::find($id)->delete();
+        return redirect()->route('tags.index');
     }
 }
