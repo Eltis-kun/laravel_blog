@@ -31,4 +31,17 @@ class CategoriesController extends Controller
         $category = Category::find($id);
         return view('admin.categories.edit', ['category' => $category]);
     }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, ['title' => 'required']);
+        $category = Category::find($id);
+        $category->update($request->all());
+        return redirect()->route('categories.index');
+    }
+
+    public function destroy()
+    {
+
+    }
 }

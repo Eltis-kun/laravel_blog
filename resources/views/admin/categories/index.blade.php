@@ -36,7 +36,12 @@
                                 <td>{{$category->id}}</td>
                                 <td>{{$category->title}}</td>
                                 <td><a href="{{route('categories.edit', $category->id)}}" class="fa fa-pencil"></a>
-                                    <a href="#" class="fa fa-remove"></a>
+                                    {{Form::open(['route'=>['categories.destroy', $category->id], 'method'=>'delete'])}}
+                                    <button onclick="return confirm('Ви дійсно хочете видалити цю категорію?')" type="submit" class="delete">
+                                        <i class="fa fa-remove"></i>
+                                    </button>
+
+                                    {{Form::close()}}
                                 </td>
                             </tr>
 

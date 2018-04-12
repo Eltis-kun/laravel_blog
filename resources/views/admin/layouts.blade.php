@@ -3,6 +3,20 @@
 
 @include('admin.includes.head')
 
+<style>
+    table.table form
+    {
+        display: inline-block;
+    }
+    button.delete
+    {
+        background: transparent;
+        border: none;
+        color: #337ab7;
+        padding: 0px;
+    }
+</style>
+
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
