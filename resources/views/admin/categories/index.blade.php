@@ -17,9 +17,6 @@
 
             <!-- Default box -->
             <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">Листинг сущности</h3>
-                </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group">
@@ -29,8 +26,8 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Название</th>
-                            <th>Действия</th>
+                            <th>Назва</th>
+                            <th>Дія</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -38,7 +35,8 @@
                             <tr>
                                 <td>{{$category->id}}</td>
                                 <td>{{$category->title}}</td>
-                                <td><a href="edit.html" class="fa fa-pencil"></a> <a href="#" class="fa fa-remove"></a>
+                                <td><a href="{{route('categories.edit', $category->id)}}" class="fa fa-pencil"></a>
+                                    <a href="#" class="fa fa-remove"></a>
                                 </td>
                             </tr>
 
