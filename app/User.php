@@ -2,9 +2,8 @@
 
 namespace App;
 
-use Cviebrock\EloquentSluggable\Tests\Models\Post;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
@@ -17,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email'
     ];
 
     /**
@@ -46,29 +45,43 @@ class User extends Authenticatable
     public function edit($fields)
     {
         $this->fill($fields);
-        $this->password = bcrypt($fields['password']);
         $this->save;
+    }
+
+    public function generatePassword($password)
+    {
+        if ($password != null) {
+            $this->password = bcrypt($password);
+            $this->save();
+        }
     }
 
     public function remove()
     {
-        Storage::delete('uploads/' . $this->image);
+        Storage::delete('/uploads/admin/avatar/' . $this->avatar);
         $this->delete();
     }
 
     public function uploadAvatar($image)
     {
-        if ($image == null) { return; }
-        Storage::delete('uploads/' . $this->image);
-        $filename = str_random(10).'.'. $image->extension();
-        $image->saveAs('uploads', $filename);
-        $this->image = $filename;
+        if ($image == null) {
+            return;
+        }
+        if ($this->avatar != null) {
+            Storage::delete('/uploads/admin/avatar/' . $this->avatar);
+        }
+
+        $filename = str_random(10) . '.' . $image->extension();
+        $image->storeAs('/uploads/admin/avatar/', $filename);
+        $this->avatar = $filename;
         $this->save();
     }
 
     public function getImage()
     {
-        if ($this->image == null) { return 'img/no-user-image.png'; }
-        return '/uploads' . $this->image;
+        if ($this->avatar == null) {
+            return '/img/admin/no-avatar.png';
+        }
+        return '/uploads/admin/avatar/' . $this->avatar;
     }
 }

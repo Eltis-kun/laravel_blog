@@ -9,10 +9,11 @@
             </h1>
         </section>
         <section class="content">
-
-            <!-- Default box -->
             <div class="box">
-                {{Form::open(['route'=> ['tags.update', $tag->id], 'method' => 'put'])}}
+                {{Form::open(['route'=> [
+                'tags.update', $tag->id],
+                 'method' => 'put'
+                 ])}}
                 <div class="box-header with-border">
                 </div>
                 @include('admin.errors')
@@ -29,15 +30,10 @@
                     <a href="{{route('tags.index')}}" class="btn btn-default" > Назад</a>
                     <button class="btn btn-warning pull-right">Змінить</button>
                 </div>
-                <!-- /.box-footer-->
                 {!! Form::close() !!}
             </div>
             <!-- /.box -->
 
         </section>
-        <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
-
-
     @endsection
