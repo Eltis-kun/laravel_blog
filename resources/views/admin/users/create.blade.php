@@ -7,7 +7,7 @@
             </h1>
         </section>
         <section class="content">
-        {{Form::open(['route'	=>	'users.store', 'files'	=>	true])}}
+        {{Form::open(['route'	=>	'users.store', 'files' => true ])}}
             <div class="box">
                 <div class="box-header with-border">
                     @include('admin.errors')
@@ -24,7 +24,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Пароль</label>
-                            <input type="password" name="password" class="form-control" id="exampleInputEmail1" placeholder="">
+                            <input type="text" name="password" class="form-control" id="exampleInputEmail1" placeholder="">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputFile">Аватар</label>

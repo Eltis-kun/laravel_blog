@@ -5,9 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
+
+    protected $userModel;
+
+    public function __construct(User $userModel)
+    {
+        $this->userModel = $userModel;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +24,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = $this->userModel->all();
         return view('admin.users.index', ['users' => $users]);
     }
 
@@ -40,11 +49,12 @@ class UsersController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users',
+            'password' => 'required',
             'avatar' => 'nullable|image',
         ]);
-        $user = User::add($request->all());
-        $user->generatePassword($request->get('password'));
-        $user->uploadAvatar($request->file('avatar'));
+        $this->userModel->add($request->all());
+        $this->userModel->generatePassword($request->get('password'));
+        $this->userModel->uploadAvatar($request->file('avatar'));
         return redirect()->route('users.index');
     }
 
@@ -56,8 +66,8 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
-        return view('admin.users.edit', ['user' => $user]);
+        $user = $this->userModel->findOrFail($id);
+        return view('admin.users.edit', compact('user'));
     }
 
     /**
@@ -69,13 +79,17 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
+        $user = $this->userModel->findOrFail($id);
         $this->validate($request,[
             'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'avatar' => 'nullable|image',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore($user->id),
+            ],
+            'avatar'    =>  'nullable|image'
         ]);
+
         $user->edit($request->all());
         $user->generatePassword($request->get('password'));
         $user->uploadAvatar($request->file('avatar'));
@@ -90,7 +104,7 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
+        $this->userModel->findOrFail($id)->remove();
         return redirect()->route('users.index');
     }
 }

@@ -37,7 +37,6 @@ class User extends Authenticatable
     {
         $user = new static;
         $user->fill($fields);
-        $user->password = bcrypt($fields['password']);
         $user->save();
         return $user;
     }
@@ -45,7 +44,8 @@ class User extends Authenticatable
     public function edit($fields)
     {
         $this->fill($fields);
-        $this->save;
+
+        $this->save();
     }
 
     public function generatePassword($password)
@@ -58,23 +58,29 @@ class User extends Authenticatable
 
     public function remove()
     {
-        Storage::delete('/uploads/admin/avatar/' . $this->avatar);
+        $this->removeAvatar();
         $this->delete();
     }
 
     public function uploadAvatar($image)
     {
+
         if ($image == null) {
             return;
         }
-        if ($this->avatar != null) {
-            Storage::delete('/uploads/admin/avatar/' . $this->avatar);
-        }
+        $this->removeAvatar();
 
         $filename = str_random(10) . '.' . $image->extension();
-        $image->storeAs('/uploads/admin/avatar/', $filename);
+        $image->storeAs('uploads/admin/avatar/', $filename);
         $this->avatar = $filename;
         $this->save();
+    }
+
+    public function removeAvatar()
+    {
+        if ($this->avatar != null) {
+            Storage::delete('uploads/admin/avatar/' . $this->avatar);
+        }
     }
 
     public function getImage()

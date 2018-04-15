@@ -13,7 +13,7 @@
             {{Form::open([
                 'route' => ['users.update', $user->id],
                 'method' => 'put',
-                'file' => true
+                'files' => true
             ])}}
             <div class="box">
                 <div class="box-header with-border">
@@ -39,7 +39,7 @@
                         <div class="form-group">
                             <img src="{{$user->getImage()}}" alt="" width="200" class="img-responsive">
                             <label for="exampleInputFile">Аватар</label>
-                            <input type="file" id="exampleInputFile" name="avatar">
+                            <input type="file"  id="exampleInputFile" name="avatar">
 
                             <p class="help-block">Какое-нибудь уведомление о форматах..</p>
                         </div>
@@ -49,8 +49,8 @@
                     <a href="{{route('users.index')}}" class="btn btn-default" > Назад</a>
                     <button class="btn btn-warning pull-right">Змінить</button>
                 </div>
-                {{Form::close()}}
             </div>
+            {{Form::close()}}
         </section>
     </div>
 @endsection
