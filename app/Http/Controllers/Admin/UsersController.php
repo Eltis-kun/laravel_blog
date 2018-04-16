@@ -46,6 +46,7 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        //todo    fix creating user
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -67,7 +68,7 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = $this->userModel->findOrFail($id);
-        return view('admin.users.edit', compact('user'));
+        return view('admin.users.edit', ['users' => $user]);
     }
 
     /**

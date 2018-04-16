@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email'
+        'name', 'email',
     ];
 
     /**
@@ -35,6 +35,7 @@ class User extends Authenticatable
 
     public static function add($fields)
     {
+
         $user = new static;
         $user->fill($fields);
         $user->save();

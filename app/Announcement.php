@@ -13,7 +13,7 @@ class Announcement extends Model
     const IS_DRAFT = 0;
     const IS_PUBLIC = 1;
 
-    protected $fillable = ['title', 'content', 'user_id'];
+    protected $fillable = ['title', 'description', 'content', 'image', 'user_id'];
 
     public function category()
     {
@@ -69,9 +69,9 @@ class Announcement extends Model
     public function uploadImage($image)
     {
         if ($image == null) { return; }
-        Storage::delete('uploads/' . $this->image);
+        Storage::delete('/uploads/articles/announcements/' . $this->image);
         $filename = str_random(10).'.'. $image->extension();
-        $image->saveAs('uploads', $filename);
+        $image->saveAs('uploads/articles/announcements/', $filename);
         $this->image = $filename;
         $this->save();
     }
@@ -79,7 +79,7 @@ class Announcement extends Model
     public function getImage()
     {
         if ($this->image == null) { return 'img/no-img.png'; }
-        return '/uploads' . $this->image;
+        return '/uploads/articles/announcements/' . $this->image;
     }
 
     public function setCategory($id)

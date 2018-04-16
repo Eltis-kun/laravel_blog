@@ -7,7 +7,8 @@
             </h1>
         </section>
         <section class="content">
-        {{Form::open(['route'	=>	'users.store', 'files' => true ])}}
+            <form action="{{route('users.store')}}" id="form" method="post" enctype="multipart/form-data">
+                {{ csrf_field() }}
             <div class="box">
                 <div class="box-header with-border">
                     @include('admin.errors')
@@ -40,7 +41,7 @@
                 </div>
 
             </div>
-            {!! Form::close() !!}
+            </form>
         </section>
     </div>
 @endsection
