@@ -13,7 +13,7 @@ class Announcement extends Model
     const IS_DRAFT = 0;
     const IS_PUBLIC = 1;
 
-    protected $fillable = ['title', 'description', 'content', 'image', 'user_id'];
+    protected $fillable = ['title', 'description', 'content', 'image'];
 
     public function category()
     {
@@ -46,9 +46,10 @@ class Announcement extends Model
 
     public static function add($fields)
     {
-        $announcement = new static;
+        $announcement = new Announcement;
         $announcement->fill($fields);
         $announcement->user_id = 1;
+        $announcement->slug = 456;
         $announcement->save();
 
         return $announcement;
@@ -62,18 +63,26 @@ class Announcement extends Model
 
     public function remove()
     {
-        Storage::delete('uploads/' . $this->image);
+        $this->removeImage();
         $this->delete();
     }
 
     public function uploadImage($image)
     {
         if ($image == null) { return; }
-        Storage::delete('/uploads/articles/announcements/' . $this->image);
+        $this->removeImage();
         $filename = str_random(10).'.'. $image->extension();
-        $image->saveAs('uploads/articles/announcements/', $filename);
+        $image->storeAs('uploads/articles/announcements/', $filename);
         $this->image = $filename;
         $this->save();
+    }
+
+    public function removeImage()
+    {
+        if($this->image != null)
+        {
+            Storage::delete('uploads/articles/announcements/' . $this->image);
+        }
     }
 
     public function getImage()

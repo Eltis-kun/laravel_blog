@@ -9,7 +9,7 @@
             </h1>
         </section>
         <form action="{{route('announcements.store')}}" id="form" method="post" enctype="multipart/form-data">
-            {{ csrf_field() }}
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <section class="content">
                 <div class="box">
                     <div class="box-header with-border">
@@ -35,39 +35,41 @@
                             </div>
                             <div class="form-group">
                                 <label>Категория</label>
-                                <select class="form-control select2" style="width: 100%;">
-                                    <option selected="selected">Alabama</option>
-                                    <option>Alaska</option>
-                                    <option>California</option>
-                                    <option>Delaware</option>
-                                    <option>Tennessee</option>
-                                    <option>Texas</option>
-                                    <option>Washington</option>
-                                </select>
+                                {{Form::select('category_id',
+                                    $categories,
+                                    null,
+                                    ['class' => 'form-control select2'])
+                                }}
                             </div>
+
+                            <div class="form-group">
+							<select name="myselect" class="form-control select2" multiple ="multiple" data-placeholder = "Выберите теги">
+							@foreach ($tags as $key => $value)
+							    <option value="{{ $key }}"
+
+							    >{{ $value }}</option>
+							@endforeach
+							</select>
+							</div>
                             <div class="form-group">
                                 <label>Теги</label>
-                                <select class="form-control select2" multiple="multiple" data-placeholder="Выберите теги" style="width: 100%;">
-                                    <option>Alabama</option>
-                                    <option>Alaska</option>
-                                    <option>California</option>
-                                    <option>Delaware</option>
-                                    <option>Tennessee</option>
-                                    <option>Texas</option>
-                                    <option>Washington</option>
-                                </select>
+                                {{Form::select('tags[]',
+                                    $tags,
+                                    null,
+                                    ['class' => 'form-control select2', 'multiple'=>'multiple','data-placeholder'=>'Выберите теги'])
+                                }}
                             </div>
                             <div class="form-group">
                                 <label>Дата:</label>
+
                                 <div class="input-group date">
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input type="text" class="form-control pull-right" name="data"
-                                           value="{{old('data')}}" id="datepicker">
+                                    <input type="text" class="form-control pull-right" id="datepicker" name="dat" value="{{old('date')}}">
                                 </div>
+                                <!-- /.input group -->
                             </div>
-
                             <!-- checkbox -->
                             <div class="form-group">
                                 <label>

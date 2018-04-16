@@ -10,12 +10,10 @@
             </h1>
         </section>
         <section class="content">
-            {{Form::open([
-                'route' => ['users.update', $user->id],
-                'method' => 'put',
-                'files' => true
-            ])}}
-            <div class="box">
+            <form action="{{route('users.update', $user->id )}}" id="form" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="_method" value="put">
+                <div class="box">
                 <div class="box-header with-border">
                     @include('admin.errors')
                 </div>
@@ -50,7 +48,7 @@
                     <button class="btn btn-warning pull-right">Змінить</button>
                 </div>
             </div>
-            {{Form::close()}}
+            </form>
         </section>
     </div>
 @endsection

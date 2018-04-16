@@ -32,7 +32,8 @@ class AnnouncementsController extends Controller
      */
     public function index()
     {
-        return view('admin.announcements.index');
+        $announcements = $this->announcement->all();
+        return view('admin.announcements.index', compact($announcements));
     }
 
     /**

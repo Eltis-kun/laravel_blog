@@ -8,8 +8,8 @@
         </section>
         <section class="content">
             <form action="{{route('users.store')}}" id="form" method="post" enctype="multipart/form-data">
-                {{ csrf_field() }}
-            <div class="box">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <div class="box">
                 <div class="box-header with-border">
                     @include('admin.errors')
                 </div>
