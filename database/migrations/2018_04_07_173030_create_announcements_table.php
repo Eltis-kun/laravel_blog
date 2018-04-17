@@ -20,6 +20,7 @@ class CreateAnnouncementsTable extends Migration
             $table->string('slug');
             $table->string('content');
             $table->string('image');
+            $table->date('date')->nullable();
             $table->integer('category_id')->nullable();
             $table->integer('user_id')->nullable();
             $table->integer('status')->default(0);

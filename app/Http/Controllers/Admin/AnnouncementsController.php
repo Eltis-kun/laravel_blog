@@ -11,19 +11,6 @@ use Illuminate\Http\Request;
 class AnnouncementsController extends Controller
 {
 
-    protected $announcement;
-    protected $category;
-    protected $tag;
-
-
-    public function __construct(Announcement $announcement,
-                                Category $category,
-                                Tag $tag)
-    {
-        $this->announcement = $announcement;
-        $this->category = $category;
-        $this->tag = $tag;
-    }
 
     /**
      * Display a listing of the resource.
@@ -32,8 +19,14 @@ class AnnouncementsController extends Controller
      */
     public function index()
     {
-        $announcements = $this->announcement->all();
-        return view('admin.announcements.index', compact($announcements));
+        $announcements = Announcement::all();
+        $categories = Category::pluck('title', 'id')->all();
+        $tags = Tag::pluck('title', 'id')->all();
+        return view('admin.announcements.index', [
+            'announcements' => $announcements,
+            'categories' => $categories,
+            'tags' => $tags,
+            ]);
     }
 
     /**
@@ -43,8 +36,8 @@ class AnnouncementsController extends Controller
      */
     public function create()
     {
-        $categories = $this->category->pluck('title', 'id')->all();
-        $tags = $this->tag->pluck('title', 'id')->all();
+        $categories = Category::pluck('title', 'id')->all();
+        $tags = Tag::pluck('title', 'id')->all();
         return view('admin.announcements.create', [
             'categories' => $categories,
             'tags' => $tags
@@ -63,10 +56,14 @@ class AnnouncementsController extends Controller
             'title' => 'required',
             'description' => 'required',
             'content' => 'required',
+            'date' => 'required',
             'image' => 'required|image',
         ]);
-        $this->announcement->add($request->all());
-        $this->announcement->uploadImage($request->file('image'));
+        $announcement = Announcement::add($request->all());
+        $announcement->uploadImage($request->file('image'));
+        $announcement->setCategory($request->get('category_id'));
+        $announcement->setTags($request->get('tags'));
+        $announcement->toggleStatus($request->get('status'));
         return redirect()->route('announcements.index');
     }
 
@@ -89,10 +86,16 @@ class AnnouncementsController extends Controller
      */
     public function edit($id)
     {
-        $announcement = $this->announcement->findOrFail($id);
-        return view('admin.announcements.edit', [
-            'announcements' => $announcement
-        ]);
+        $announcement = Announcement::findOrFail($id);
+        $categories = Category::pluck('title', 'id')->all();
+        $tags = Tag::pluck('title', 'id')->all();
+        $selectedTags = $announcement->tags->pluck('id')->all();
+        return view('admin.announcements.edit', compact(
+            'categories',
+            'tags',
+            'announcement',
+            'selectedTags'
+        ));
     }
 
     /**
@@ -104,7 +107,21 @@ class AnnouncementsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' =>'required',
+            'content'   =>  'required',
+            'date'  =>  'required',
+            'image' =>  'nullable|image'
+        ]);
+
+        $announcement = Announcement::findOrFail($id);
+        $announcement->edit($request->all());
+        $announcement->uploadImage($request->file('image'));
+        $announcement->setCategory($request->get('category_id'));
+        $announcement->setTags($request->get('tags'));
+        $announcement->toggleStatus($request->get('status'));
+
+        return redirect()->route('announcements.index');
     }
 
     /**
@@ -115,6 +132,9 @@ class AnnouncementsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Announcement::findOrFail($id)->remove();
+        return redirect()->route('posts.index');
     }
+
+
 }

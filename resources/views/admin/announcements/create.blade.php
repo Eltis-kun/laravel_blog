@@ -51,6 +51,8 @@
 							@endforeach
 							</select>
 							</div>
+
+
                             <div class="form-group">
                                 <label>Теги</label>
                                 {{Form::select('tags[]',
@@ -66,7 +68,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input type="text" class="form-control pull-right" id="datepicker" name="dat" value="{{old('date')}}">
+                                    <input type="text" class="form-control pull-right" id="datepicker" name="date" value="{{old('date')}}">
                                 </div>
                                 <!-- /.input group -->
                             </div>
@@ -84,7 +86,7 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Текст анонсов</label>
                                 <textarea name="content" id="" cols="30" rows="10" class="form-control"
-                                          style="resize: none"></textarea>
+                                          style="resize: none">{{old('content')}}</textarea>
                             </div>
                         </div>
                     </div>

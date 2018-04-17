@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -13,16 +14,16 @@ class Announcement extends Model
     const IS_DRAFT = 0;
     const IS_PUBLIC = 1;
 
-    protected $fillable = ['title', 'description', 'content', 'image'];
+    protected $fillable = ['title','content', 'date', 'description'];
 
     public function category()
     {
-        return $this->hasOne(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function author()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function tags()
@@ -46,12 +47,10 @@ class Announcement extends Model
 
     public static function add($fields)
     {
-        $announcement = new Announcement;
+        $announcement = new static;
         $announcement->fill($fields);
         $announcement->user_id = 1;
-        $announcement->slug = 456;
         $announcement->save();
-
         return $announcement;
     }
 
@@ -91,6 +90,12 @@ class Announcement extends Model
         return '/uploads/articles/announcements/' . $this->image;
     }
 
+    public function setDateAttribute($value)
+    {
+        $date = Carbon::createFromFormat('d/m/y', $value)->format('Y-m-d');
+        $this->attributes['date'] = $date;
+    }
+
     public function setCategory($id)
     {
         if ($id ==null ) { return;}
@@ -124,5 +129,32 @@ class Announcement extends Model
         }
 
         return $this->setPublic();
+    }
+
+
+    public function getCategoryTitle()
+    {
+        return ($this->category != null)
+            ?   $this->category->title
+            :   'Категорія відсутня';
+    }
+
+    public function getTagsTitles()
+    {
+        return (!$this->tags->isEmpty())
+            ?   implode(', ', $this->tags->pluck('title')->all())
+            : 'Теги відсутні';
+    }
+
+    public function getCategoryID()
+    {
+        return $this->category != null ? $this->category->id : null;
+    }
+
+    public function getDateAttribute($value)
+    {
+        $date = Carbon::createFromFormat('Y-m-d', $value)->format('d/m/y');
+
+        return $date;
     }
 }

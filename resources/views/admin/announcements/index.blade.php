@@ -43,13 +43,13 @@
                         <tr>
                             <td>{{$announcement->id}}</td>
                             <td>{{$announcement->title}}</td>
-                            <td>Обучение</td>
-                            <td>Laravel, PHP</td>
+                            <td>{{$announcement->getCategoryTitle()}}</td>
+                            <td>{{$announcement->getTagsTitles()}}</td>
                             <td>
                                 <img src="{{$announcement->getImage()}}" alt="" width="100">
                             </td>
                             <td>
-                            <td><a href="{{route('announcements.edit', $announcement->id)}}" class="fa fa-pencil"></a>
+                                <a href="{{route('announcements.edit', $announcement->id)}}" class="fa fa-pencil"></a>
 
                                 <form action="{{route('announcements.destroy', $announcement->id)}}" method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
